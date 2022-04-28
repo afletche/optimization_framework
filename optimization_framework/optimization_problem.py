@@ -4,11 +4,11 @@ A framework for setting up optimization problems.
 
 import time
 import numpy as np
-from dynamic_fea.optimizers.backtracking_line_search import BacktrackingLineSearch
-from dynamic_fea.optimizers.finite_difference_line_search import FiniteDifferenceLineSearch
-from dynamic_fea.optimizers.secant_line_search import SecantLineSearch
-from dynamic_fea.optimizers.gradient_finite_difference_line_search import GradientFiniteDifferenceLineSearch
-from dynamic_fea.optimizers.finite_difference import finite_difference
+from optimization_framework.optimizers.backtracking_line_search import BacktrackingLineSearch
+from optimization_framework.optimizers.finite_difference_line_search import FiniteDifferenceLineSearch
+from optimization_framework.optimizers.secant_line_search import SecantLineSearch
+from optimization_framework.optimizers.gradient_finite_difference_line_search import GradientFiniteDifferenceLineSearch
+from optimization_framework.optimizers.finite_difference import finite_difference
 
 class OptimizationProblem:
     def __init__(self) -> None:

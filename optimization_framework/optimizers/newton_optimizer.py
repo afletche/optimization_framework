@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 
-from dynamic_fea.optimizers.optimizer import Optimizer
+from optimization_framework.optimizers.optimizer import Optimizer
 
 class NewtonOptimizer(Optimizer):
 
