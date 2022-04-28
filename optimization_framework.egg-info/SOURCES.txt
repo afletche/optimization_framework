@@ -1,0 +1,6 @@
+README.md
+setup.py
+optimization_framework.egg-info/PKG-INFO
+optimization_framework.egg-info/SOURCES.txt
+optimization_framework.egg-info/dependency_links.txt
+optimization_framework.egg-info/top_level.txt

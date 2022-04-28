@@ -77,7 +77,7 @@ for name_list in list_of_pyx_names:
 packages = list(set(packages))
 
 setup(
-    name='dynamic_fea',
+    name='optimization_framework',
     ext_modules=ext_modules,
     packages=packages
 )

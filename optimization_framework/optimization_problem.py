@@ -33,10 +33,8 @@ class OptimizationProblem:
             self.model_type = 'object'
 
     def setup(self):
-        try:
+        if self.model_type == 'object':
             self.model.setup()
-        except:
-            pass
         self.optimizer.setup()
 
     '''
