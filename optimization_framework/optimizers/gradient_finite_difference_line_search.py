@@ -49,7 +49,7 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
         self.df_dx_history[0] = self.df_dx.copy().dot(self.search_direction)
 
         if self.eval_num == 1:
-            self.delta_x_dist = self.initial_step     # take initial step for central fd (-h)
+            self.delta_x_dist = self.initial_step     # take initial step for forward fd (+h)
         else:
             self.eval_num = 0   # resetting cycle so next 3 evalualtions will be made to calc the fd
             self.dfdx_search_direction = self.df_dx_history[0]
@@ -57,8 +57,7 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
             # print('f1', self.dfdx_search_direction)
             # print('f2', self.d2fdx2_search_direction)
 
-            # self.delta_x_dist = -self.dfdx_search_direction/np.abs(self.d2fdx2_search_direction)
-            self.delta_x_dist = self.dfdx_search_direction/np.abs((self.d2fdx2_search_direction))
+            self.delta_x_dist = -self.dfdx_search_direction/np.abs((self.d2fdx2_search_direction))
             # print('delta_x', self.delta_x_dist)
 
         print(self.num_evaluations)
