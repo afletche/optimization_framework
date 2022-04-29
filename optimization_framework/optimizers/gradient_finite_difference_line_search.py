@@ -58,7 +58,7 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
             # print('f2', self.d2fdx2_search_direction)
 
             # self.delta_x_dist = -self.dfdx_search_direction/np.abs(self.d2fdx2_search_direction)
-            self.delta_x_dist = -self.dfdx_search_direction/np.abs((self.d2fdx2_search_direction))
+            self.delta_x_dist = self.dfdx_search_direction/np.abs((self.d2fdx2_search_direction))
             # print('delta_x', self.delta_x_dist)
 
         print(self.num_evaluations)
