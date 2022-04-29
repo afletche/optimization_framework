@@ -65,8 +65,8 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
         print('line search evaluation: ', self.num_evaluations)
         # print('eval_num', self.eval_num)
         if self.eval_num == 0:
-            if np.abs(self.delta_x_dist) < 1e-8:
-                self.x = self.x + 1e-8*-self.df_dx
+            if np.abs(self.delta_x_dist) < 1e-3:
+                self.x = self.x + 1e-3*-self.df_dx
             else:
                 self.x = self.x + self.delta_x_dist*self.search_direction
         else:
