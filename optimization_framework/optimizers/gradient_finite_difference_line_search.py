@@ -18,6 +18,7 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
         self.df_dx0 = df_dx0
         self.search_direction = -df_dx0/np.linalg.norm(df_dx0)
         self.initial_step = 1e-7
+        self.damping = 0.9
         self.eval_num = 0
         self.is_converged = False
 
@@ -57,11 +58,11 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
             # print('f1', self.dfdx_search_direction)
             # print('f2', self.d2fdx2_search_direction)
 
-            self.delta_x_dist = -self.dfdx_search_direction/np.abs((self.d2fdx2_search_direction))
+            self.delta_x_dist = -self.dfdx_search_direction/np.abs((self.d2fdx2_search_direction)) * self.damping
             # print('delta_x', self.delta_x_dist)
 
-        print(self.num_evaluations)
-        print('eval_num', self.eval_num)
+        print('line search evaluation: ', self.num_evaluations)
+        # print('eval_num', self.eval_num)
         if self.eval_num == 0:
             if np.abs(self.delta_x_dist) < 1e-8:
                 self.x = self.x + 1e-8*-self.df_dx
