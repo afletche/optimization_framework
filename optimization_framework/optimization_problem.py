@@ -71,14 +71,17 @@ class OptimizationProblem:
                     print("Line search is defaulting to FD.")
                     line_searcher = FiniteDifferenceLineSearch(x, model_outputs[0], model_outputs[2])
                 line_search_is_converged = False
-                line_search_iterations = 0
-                while not line_search_is_converged:
+                # line_search_iterations = 0
+                max_line_search_iterations = 20
+                for line_search_iteration in range(max_line_search_iterations):
                     model_outputs = self.evaluate_model(x, rho)
                     x = line_searcher.evaluate(model_outputs)
                     # print(f'Line Search for Iteration {self.iteration_number}: ', x)
                     self.model_evaluations += 1
-                    line_search_iterations += 1
+                    # line_search_iterations += 1
                     line_search_is_converged = line_searcher.check_convergence()
+                    if line_search_is_converged:
+                        break
                 self.optimizer.x = x.copy()
                 self.optimizer.evaluate(model_outputs)  # this is just for the sake of having a gradient stored in the optimizer
             else:
