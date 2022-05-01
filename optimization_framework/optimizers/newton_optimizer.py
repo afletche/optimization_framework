@@ -36,14 +36,20 @@ class NewtonOptimizer(Optimizer):
     def evaluate(self, model_outputs):
         super().evaluate(model_outputs)
 
-        self.delta_x = np.linalg.solve(self.d2f_dx2, -self.df_dx)
+        if self.kkt is not None:
+            print(self.f)
+            self.delta_x = np.linalg.solve(self.kkt, -self.dl_dx)
+        else:
+            self.delta_x = np.linalg.solve(self.d2f_dx2, -self.df_dx)
         self.x += self.delta_x
         
         return self.x
 
 
-    def check_convergence(self, grad_norm_abs_tol):
+    def check_convergence(self, grad_norm_abs_tol, delta_x_abs_tol):
         if np.linalg.norm(self.df_dx) < grad_norm_abs_tol:
+            return True
+        elif np.linalg.norm(self.delta_x) < delta_x_abs_tol:
             return True
         else:
             return False

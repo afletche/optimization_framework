@@ -15,10 +15,12 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
         self.x0 = x0
         self.x = x0.copy()
         self.f0 = f0
+        self.current_f = f0.copy()
         self.df_dx0 = df_dx0
         self.search_direction = -df_dx0/np.linalg.norm(df_dx0)
         self.initial_step = 1e-7
-        self.damping = 0.9
+        self.damping = 0.99
+        self.alpha = 1.2
         self.eval_num = 0
         self.is_converged = False
 
@@ -26,6 +28,11 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
         self.x_history = np.zeros((3,) + x0.shape)
         self.x_history[0,:] = x0.copy()
         self.dfdx_search_direction = 1
+
+        self.f_test = np.zeros((50,))
+        self.df_dsearchdirection_test = np.zeros((50,))
+        self.x_dist_test = np.zeros((50,))
+        self.test_counter = 0
 
         self.num_evaluations = 0
 
@@ -45,6 +52,46 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
         self.eval_num += 1
         super().evaluate(model_outputs)
 
+        gradient = self.df_dx.dot(self.search_direction)
+
+        if self.eval_num == 1 and self.num_evaluations != 0:
+            sufficient_decrease_value_1 = self.current_f + self.dfdx_search_direction*(self.delta_x_dist*self.alpha)*0.75
+            print('f', self.f, 'dfdx: ', gradient)
+            # print('sufficient_decrease_value_1', sufficient_decrease_value_1)
+            # self.f_test[self.test_counter] = self.f.copy()
+            # self.df_dsearchdirection_test[self.test_counter] = self.df_dx.dot(self.search_direction)
+            # if self.test_counter == 0:
+            #     self.x_dist_test[self.test_counter] = self.delta_x_dist
+            # else:
+            #     self.x_dist_test[self.test_counter] = self.delta_x_dist + self.delta_x_dist*(self.alpha - 1.)
+            # if self.f > sufficient_decrease_value_1 and gradient > 0 and self.test_counter < 51:
+            if self.f > sufficient_decrease_value_1 and gradient > 0:
+            # if self.f > sufficient_decrease_value_1 and self.num_evaluations < 51:
+            # if self.num_evaluations < 51:
+                print('line search: sufficient decrease not satisfied.')
+                self.alpha *= 0.9
+                self.eval_num -= 1
+                self.num_evaluations += 1
+                self.test_counter += 1
+                return self.x + (self.alpha - 1.)*self.delta_x_dist*self.search_direction
+            else:
+                self.current_f = self.f.copy()
+                self.x = self.x + (self.alpha - 1.)*self.delta_x_dist*self.search_direction
+                self.x_history[0,:] = self.x.copy()
+                self.alpha = 1.2
+                # print(self.test_counter)
+                # plt.figure()
+                # plt.plot(self.x_dist_test, self.f_test, 'o')
+                # plt.title('f')
+                # plt.figure()
+                # plt.plot(self.x_dist_test, self.df_dsearchdirection_test, 'x')
+                # plt.title('df_dx')
+                # plt.show()
+                # self.f_test = np.zeros((50,))
+                # self.df_dsearchdirection_test = np.zeros((50,))
+                # self.x_dist_test = np.zeros((50,))
+                # self.test_counter = 0
+
 
         self.df_dx_history[1] = self.df_dx_history[0].copy()
         self.df_dx_history[0] = self.df_dx.copy().dot(self.search_direction)
@@ -62,6 +109,7 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
             self.damping *= self.damping
             # print('delta_x', self.delta_x_dist)
 
+            
         print('line search evaluation: ', self.num_evaluations)
         # print('eval_num', self.eval_num)
         if self.eval_num == 0:
@@ -71,6 +119,7 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
                 self.x = self.x + self.delta_x_dist*self.search_direction
         else:
             self.x = self.x_history[0] + self.delta_x_dist*self.search_direction
+
         
         self.x_history[1,:] = self.x_history[0].copy()
         self.x_history[0,:] = self.x.copy()

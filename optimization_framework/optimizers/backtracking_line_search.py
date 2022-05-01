@@ -44,6 +44,7 @@ class BacktrackingLineSearch(Optimizer):
 
     def check_convergence(self):
         if self.f < self.f0 + 0.85*self.alpha*np.dot(self.df_dx0, self.search_direction):
+            print('TRUEE')
             return True
         elif self.alpha < 1e-3:
             return True

@@ -72,7 +72,7 @@ class OptimizationProblem:
                     line_searcher = FiniteDifferenceLineSearch(x, model_outputs[0], model_outputs[2])
                 line_search_is_converged = False
                 # line_search_iterations = 0
-                max_line_search_iterations = 20
+                max_line_search_iterations = 100
                 for line_search_iteration in range(max_line_search_iterations):
                     model_outputs = self.evaluate_model(x, rho)
                     x = line_searcher.evaluate(model_outputs)
