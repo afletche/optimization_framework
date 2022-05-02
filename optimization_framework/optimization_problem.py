@@ -50,7 +50,7 @@ class OptimizationProblem:
                 if np.mod(iteration_number, 10) == 0:
                     rho *= 10
             self.iteration_number += 1
-            # print(self.iteration_number, x)
+            print(self.iteration_number, x)
             
 
             model_outputs = self.evaluate_model(x, rho)
@@ -76,7 +76,7 @@ class OptimizationProblem:
                 for line_search_iteration in range(max_line_search_iterations):
                     model_outputs = self.evaluate_model(x, rho)
                     x = line_searcher.evaluate(model_outputs)
-                    # print(f'Line Search for Iteration {self.iteration_number}: ', x)
+                    print(f'Line Search for Iteration {self.iteration_number}: ', x)
                     self.model_evaluations += 1
                     # line_search_iterations += 1
                     line_search_is_converged = line_searcher.check_convergence()
