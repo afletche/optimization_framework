@@ -34,6 +34,8 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
         self.x_dist_test = np.zeros((50,))
         self.test_counter = 0
 
+        self.backtracking_satisfied = False
+
         self.num_evaluations = 0
 
 
@@ -79,6 +81,7 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
                 self.x = self.x + (self.alpha - 1.)*self.delta_x_dist*self.search_direction
                 self.x_history[0,:] = self.x.copy()
                 self.alpha = 1.2
+                self.backtracking_satisfied = True
                 # print(self.test_counter)
                 # plt.figure()
                 # plt.plot(self.x_dist_test, self.f_test, 'o')
@@ -131,6 +134,8 @@ class GradientFiniteDifferenceLineSearch(Optimizer):
 
     def check_convergence(self):
         if np.abs(self.dfdx_search_direction) < 1e-1:
+            return True
+        elif self.backtracking_satisfied:
             return True
         else:    
             return False
