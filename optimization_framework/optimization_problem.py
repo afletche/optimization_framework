@@ -47,7 +47,7 @@ class OptimizationProblem:
         rho = objective_penalty
         for iteration_number in range(max_iter):
             if updating_penalty:
-                if np.mod(iteration_number, 10) == 0:
+                if np.mod(iteration_number, 25) == 0:
                     rho *= 10
             self.iteration_number += 1
             print(self.iteration_number, x)
